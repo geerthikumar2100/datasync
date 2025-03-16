@@ -37,8 +37,8 @@ class User(AbstractUser):
     created_by = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name="created_users")
     updated_by = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name="updated_users")
 
-    USERNAME_FIELD = "email"  # Authenticate users by email
-    REQUIRED_FIELDS = []  # No required username
+    USERNAME_FIELD = "email" 
+    REQUIRED_FIELDS = []
 
     objects = UserManager()
 
@@ -104,7 +104,7 @@ class Destination(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="destinations")
     url = models.URLField()
     http_method = models.CharField(max_length=10, choices=[("GET", "GET"), ("POST", "POST"), ("PUT", "PUT")])
-    headers = models.JSONField()
+    headers = models.JSONField(blank=True, null=True, default=dict)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="created_destinations")

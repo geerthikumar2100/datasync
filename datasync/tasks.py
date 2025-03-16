@@ -23,13 +23,20 @@ def send_data_to_destination(destination_id, event_id, data):
     except Exception as e:
         status = "failed"
     print(f'{status=} {event_id=} ')
-    # ✅ Log the Attempt
-    Log.objects.create(
-        event_id=event_id,
-        account=destination.account,
-        destination=destination,
-        received_timestamp=now(),
-        processed_timestamp=now(),
-        received_data=data,
-        status=status
-    )
+    if Log.objects.filter(event_id=event_id).exists():
+        Log.objects.filter(event_id=event_id).update(
+            received_timestamp=now(),
+            processed_timestamp=now(),
+            received_data=data,
+            status=status
+        )
+    else: 
+        Log.objects.create(
+            event_id=event_id,
+            account=destination.account,
+            destination=destination,
+            received_timestamp=now(),
+            processed_timestamp=now(),
+            received_data=data,
+            status=status
+        )

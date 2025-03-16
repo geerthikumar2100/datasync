@@ -16,17 +16,14 @@ def incoming_data(request):
     and trigger async tasks to send data to destinations.
     """
 
-    # ✅ Validate Required Headers
     secret_token = request.headers.get("CL-X-TOKEN")
     event_id = request.headers.get("CL-X-EVENT-ID")
 
     if not secret_token or not event_id:
         return Response({"success": False, "message": "Unauthenticated"}, status=401)
 
-    # ✅ Identify Account Using Secret Token
     account = get_object_or_404(Account, app_secret_token=secret_token)
 
-    # ✅ Validate JSON Format
     if not isinstance(request.data, dict):
         return Response({"success": False, "message": "Invalid Data"}, status=400)
     

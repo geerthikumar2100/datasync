@@ -16,8 +16,28 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
+from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_protect
+from core.views.data_handler import incoming_data
+
+admin.site.site_header = "Broadcaster"
+admin.site.site_title = "Broadcaster Portal"
+admin.site.index_title = "Welcome to Broadcaster"
+
+def redirect_based_on_user(request):
+    if request.user.is_authenticated:
+        return redirect('admin:index')
+    return redirect('admin:login')
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("", include("core.urls")),  # Ensure 'core.urls' is included
+    path('admin/login/', auth_views.LoginView.as_view(
+        template_name='admin/login.html',
+        redirect_authenticated_user=True,
+        next_page='admin:index'  # Explicitly set next_page
+    ), name='login'),
+    path('admin/', admin.site.urls),
+    path('api/', include('core.urls')),
+    path('server/incoming_data/', incoming_data, name='incoming_data'),
+    path('', redirect_based_on_user, name='root'),
 ]
