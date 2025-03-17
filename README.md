@@ -63,6 +63,11 @@ Content-Type: application/json
     "email": "user@example.com",
     "password": "secure_password"
 }
+
+Response:
+{
+    "message": "User created successfully"
+}
 ```
 
 2. User Login
@@ -74,12 +79,22 @@ Content-Type: application/json
     "username": "user@example.com",
     "password": "secure_password"
 }
+
+Response:
+{
+    "token": "your-auth-token"
+}
 ```
 
 3. User Logout
 ```bash
 POST /api/auth/logout/
 Authorization: Token <your-token>
+
+Response:
+{
+    "message": "Logged out successfully"
+}
 ```
 
 ### Account Management
@@ -91,7 +106,18 @@ Authorization: Token <your-token>
 Content-Type: application/json
 
 {
-    "account_name": "Test Account"
+    "account_name": "Test Account",
+    "website": "https://example.com"  # Optional
+}
+
+Response:
+{
+    "id": "uuid",
+    "account_name": "Test Account",
+    "app_secret_token": "generated-token",
+    "website": "https://example.com",
+    "created_at": "timestamp",
+    "updated_at": "timestamp"
 }
 ```
 
@@ -99,6 +125,42 @@ Content-Type: application/json
 ```bash
 GET /api/accounts/
 Authorization: Token <your-token>
+
+Response:
+[
+    {
+        "id": "uuid",
+        "account_name": "Test Account",
+        "app_secret_token": "token",
+        "website": "https://example.com",
+        "created_at": "timestamp",
+        "updated_at": "timestamp"
+    }
+]
+```
+
+3. Get Account Details
+```bash
+GET /api/accounts/{id}/
+Authorization: Token <your-token>
+
+Response:
+{
+    "id": "uuid",
+    "account_name": "Test Account",
+    "app_secret_token": "token",
+    "website": "https://example.com",
+    "created_at": "timestamp",
+    "updated_at": "timestamp"
+}
+```
+
+4. Delete Account
+```bash
+DELETE /api/accounts/{id}/
+Authorization: Token <your-token>
+
+Response: 204 No Content
 ```
 
 ### Destination Management
@@ -112,9 +174,135 @@ Content-Type: application/json
 {
     "account": "account-uuid",
     "url": "https://example.com/webhook",
-    "http_method": "POST"
+    "http_method": "POST",
+    "headers": {
+        "Custom-Header": "value"
+    }
+}
+
+Response:
+{
+    "id": "uuid",
+    "account": "account-uuid",
+    "url": "https://example.com/webhook",
+    "http_method": "POST",
+    "headers": {
+        "Custom-Header": "value"
+    },
+    "created_at": "timestamp",
+    "updated_at": "timestamp"
 }
 ```
+
+2. List Destinations
+```bash
+GET /api/destinations/
+Authorization: Token <your-token>
+
+Response:
+[
+    {
+        "id": "uuid",
+        "account": "account-uuid",
+        "url": "https://example.com/webhook",
+        "http_method": "POST",
+        "headers": {},
+        "created_at": "timestamp",
+        "updated_at": "timestamp"
+    }
+]
+```
+
+3. Get Destination Details
+```bash
+GET /api/destinations/{id}/
+Authorization: Token <your-token>
+
+Response:
+{
+    "id": "uuid",
+    "account": "account-uuid",
+    "url": "https://example.com/webhook",
+    "http_method": "POST",
+    "headers": {},
+    "created_at": "timestamp",
+    "updated_at": "timestamp"
+}
+```
+
+4. Update Destination
+```bash
+PUT /api/destinations/{id}/
+Authorization: Token <your-token>
+Content-Type: application/json
+
+{
+    "url": "https://new-url.com/webhook",
+    "http_method": "GET",
+    "headers": {
+        "New-Header": "value"
+    }
+}
+```
+
+5. Delete Destination
+```bash
+DELETE /api/destinations/{id}/
+Authorization: Token <your-token>
+
+Response: 204 No Content
+```
+
+### Account Members Management
+
+1. Add Member to Account
+```bash
+POST /api/accounts/{account_id}/members/
+Authorization: Token <your-token>
+Content-Type: application/json
+
+{
+    "user": "user-id",
+    "role": "role-id"
+}
+
+Response:
+{
+    "id": "uuid",
+    "account": "account-id",
+    "user": "user-id",
+    "role": "role-id",
+    "created_at": "timestamp",
+    "updated_at": "timestamp"
+}
+```
+
+2. List Account Members
+```bash
+GET /api/accounts/{account_id}/members/
+Authorization: Token <your-token>
+
+Response:
+[
+    {
+        "id": "uuid",
+        "account": "account-id",
+        "user": {
+            "id": "user-id",
+            "email": "user@example.com"
+        },
+        "role": {
+            "id": "role-id",
+            "role_name": "Admin"
+        }
+    }
+]
+```
+
+### Swagger Documentation
+For interactive API documentation with request/response examples:
+- Swagger UI: `http://localhost:8000/api/swagger/`
+- ReDoc: `http://localhost:8000/api/redoc/`
 
 ## Running Tests
 
@@ -197,3 +385,4 @@ python manage.py migrate
 - Check if Redis/Memurai is running
 - Verify connection settings in settings.py
 - Test connection using redis-cli or Memurai CLI
+
