@@ -1,0 +1,13 @@
+Django==5.1.7
+djangorestframework==3.14.0
+drf-yasg==1.21.7
+celery==5.3.6
+redis==5.0.1
+django-cors-headers==4.3.1
+python-dotenv==1.0.1
+gunicorn==21.2.0
+whitenoise==6.6.0
+memurai-sdk==0.3.0
+coverage==7.4.3
+pytest==8.0.2
+pytest-django==4.8.0 

@@ -30,3 +30,7 @@ class LogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Log
         fields = "__all__"
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, style={'input_type': 'password'})

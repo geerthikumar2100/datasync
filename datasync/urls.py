@@ -37,7 +37,7 @@ urlpatterns = [
         next_page='admin:index'  # Explicitly set next_page
     ), name='login'),
     path('admin/', admin.site.urls),
-    path('api/', include('core.urls')),
+    path('', include('core.urls')),
     path('server/incoming_data/', incoming_data, name='incoming_data'),
     path('', redirect_based_on_user, name='root'),
 ]
