@@ -20,32 +20,9 @@ A Django REST API for managing data synchronization between systems.
 
 1. Clone the repository
 
-2. Create and activate virtual environment
-
-```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
-
-# Linux/Mac
-python -m venv venv
-source venv/bin/activate
-```
-
-3. Install dependencies
+2. Install dependencies
 ```bash
 pip install -r requirements.txt
-```
-
-4. Set up environment variables
-```bash
-# Create .env file
-cp .env.example .env
-
-# Edit .env file with your settings
-DEBUG=True
-SECRET_KEY=your-secret-key
-DATABASE_URL=sqlite:///db.sqlite3
 ```
 
 ## Infrastructure Setup
@@ -220,8 +197,3 @@ python manage.py migrate
 - Check if Redis/Memurai is running
 - Verify connection settings in settings.py
 - Test connection using redis-cli or Memurai CLI
-
-3. Static files not loading
-```bash
-python manage.py collectstatic --noinput
-```
